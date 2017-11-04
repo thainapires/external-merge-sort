@@ -19,7 +19,8 @@ print "Tamanho de cada linha do arquivo: %d" % registroCEP.size
 f = open("cep.dat","rb+")
 fAux = open("cepBlocos.dat","wb+")
 
-tam = os.path.getsize("cep.dat")/registroCEP.size
+#tam = os.path.getsize("cep.dat")/registroCEP.size
+tam = 100
 tamBlocos = []
 qtdBlocos = tam / tamBloco
 resto = tam - (tamBloco * qtdBlocos)

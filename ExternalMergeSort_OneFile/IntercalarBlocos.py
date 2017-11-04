@@ -10,8 +10,9 @@ inicio = time.time()
 registroCEP = struct.Struct("72s72s72s72s2s8s2s")
 cepColumn = 5
 print "Tamanho da Estrutura: %d" % registroCEP.size
-tam = os.path.getsize("cepBlocos.dat")/registroCEP.size
-tamBloco = 1000
+#tam = os.path.getsize("cepBlocos.dat")/registroCEP.size
+tam = 100
+tamBloco = 10
 tamBlocos = []
 qtdBlocos = tam / tamBloco
 resto = tam - (tamBloco * qtdBlocos)
