@@ -34,7 +34,7 @@ Fase de fusão (merge) dos blocos criados na fase anterior.
 - Memória RAM: 8,00GB
 - Sistema operacional: Windows 10 64 bits
 
-
+*Link para baixar o arquivo dos CEPs: https://drive.google.com/file/d/1hoTpOwcF3lWd-Pcsf6Nf2TXnjCgRyt9I/view?usp=sharing
 
 
 
