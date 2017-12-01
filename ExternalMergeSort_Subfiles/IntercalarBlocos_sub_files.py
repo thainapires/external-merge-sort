@@ -1,31 +1,38 @@
+#ARQUIVO PARA INTERCALACAO DOS BLOCOS ATRAVES DO MERGE SORT
+
 import struct
 import sys
 import os
-import time
+'''import time
 
-#ARQUIVO PARA INTERCALACAO DOS BLOCOS ATRAVES DO MERGE SORT
+if len(sys.argv) != 2:
+	tamanhoDoBloco = int(input("Entre com o numero de linhas de cada bloco: "))
+else:
+	tamanhoDoBloco = int(sys.argv[1])
 
-inicio = time.time()
+#inicio = time.time()'''
+
+'''Definicao da estrutura do arquivo, assim como calculo da quantidade de blocos, armazenando em uma lista onde cada indice indica a quantidade
+de linhas que o bloco do determinado indice possui'''
+
+tamanhoDoBloco = 10000
 
 registroCEP = struct.Struct("72s72s72s72s2s8s2s")
-cepColumn = 5
-print "Tamanho da Estrutura: %d" % registroCEP.size
-tam = 100
-#tam = os.path.getsize("cep.dat")/registroCEP.size
-tamBloco = 10
+colunaDoCEP = 5
+#qtdLinhasTotal = 100
+qtdLinhasTotal = os.path.getsize("cep.dat")/registroCEP.size
 tamBlocos = []
-qtdBlocos = tam / tamBloco
-resto = tam - (tamBloco * qtdBlocos)
-tamBlocos = [tamBloco] * qtdBlocos
+qtdBlocos = qtdLinhasTotal / tamanhoDoBloco
+resto = qtdLinhasTotal - (tamanhoDoBloco * qtdBlocos)
+tamBlocos = [tamanhoDoBloco] * qtdBlocos
 if resto > 0:
 	tamBlocos.append(resto)
 
 def cmp ( ta, tb ):
-	if ta[cepColumn] == tb[cepColumn]: return 0
-	if ta[cepColumn] > tb[cepColumn]: return 1
+	if ta[colunaDoCEP] == tb[colunaDoCEP]: return 0
+	if ta[colunaDoCEP] > tb[colunaDoCEP]: return 1
 	return -1
   
-blocoAtual = 0
 
 def intercalar (blocoAtual, tamBlocosAt, blocoAtualum, tamBlocosAtu,NomeArquivo):
 
@@ -33,7 +40,6 @@ def intercalar (blocoAtual, tamBlocosAt, blocoAtualum, tamBlocosAtu,NomeArquivo)
 
         in1 = 0
         in2 = 0
-
 
         r1 = fAtual.read(registroCEP.size)
         r2 = fUM.read(registroCEP.size)
@@ -85,20 +91,20 @@ def intercalar (blocoAtual, tamBlocosAt, blocoAtualum, tamBlocosAtu,NomeArquivo)
         os.remove(str(blocoAtual+1) +".dat")
         os.rename('temp.dat', str(NomeArquivo)+".dat")
 
-vetoraux=[]
+tamBlocosAux=[]
 cont = 0
 while len(tamBlocos) != 1:
-        vetoraux = []
+        tamBlocosAux = []
         numeroBlocos = len(tamBlocos)
         blocoAtual = 0
         contadorDeBlocos = 0
         while blocoAtual < numeroBlocos:
                 if blocoAtual+1 == len(tamBlocos):
-                        vetoraux.append(tamBlocos[blocoAtual])
+                        tamBlocosAux.append(tamBlocos[blocoAtual])
                         if blocoAtual-2 != 0:
-                                os.rename(str(blocoAtual)+".dat", str(len(vetoraux)-1)+".dat")
+                                os.rename(str(blocoAtual)+".dat", str(len(tamBlocosAux)-1)+".dat")
                         else:
-                                os.rename(str(blocoAtual)+".dat", str(len(vetoraux)-1)+".dat")
+                                os.rename(str(blocoAtual)+".dat", str(len(tamBlocosAux)-1)+".dat")
                                 
                         blocoAtual += 2
                         break
@@ -106,13 +112,9 @@ while len(tamBlocos) != 1:
                         fAtual = open(str(blocoAtual) + ".dat","rb+")
                         fUM = open(str(blocoAtual+1) + ".dat","rb+")
                         intercalar(blocoAtual, tamBlocos[blocoAtual], blocoAtual+1, tamBlocos[blocoAtual+1],contadorDeBlocos)
-                        vetoraux.append(tamBlocos[blocoAtual] + tamBlocos[blocoAtual+1])
+                        tamBlocosAux.append(tamBlocos[blocoAtual] + tamBlocos[blocoAtual+1])
                         blocoAtual += 2
                         contadorDeBlocos += 1
-        tamBlocos = vetoraux
+        tamBlocos = tamBlocosAux
 
 os.rename('0.dat', "cep_ordenado.dat")
-
-final = time.time()- inicio
-print 'fim em: ',final
-print tamBlocos
