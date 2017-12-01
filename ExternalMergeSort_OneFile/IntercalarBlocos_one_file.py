@@ -1,20 +1,22 @@
-#ARQUIVO DE ORDENACAO DE BLOCOS COM TAMANHO ESCOLHIDO PELO USUARIO
+#ARQUIVO PARA INTERCALACAO DOS BLOCOS ATRAVES DO MERGE SORT
 
 import struct
 import sys
 import os
-import time
+'''import time
 
-#Input do usuario pelo terminal ou input#
 if len(sys.argv) != 2:
-	tamanhoDoBloco = int(raw_input("Entre com o numero de linhas de cada bloco: "))
+	tamBloco = int(input("Entre com o numero de linhas de cada bloco: "))
 else:
-	tamanhoDoBloco = int(sys.argv[1])
+	tamBloco = int(sys.argv[1])
 
-inicio = time.time()
+#inicio = time.time()'''
 
 '''Definicao da estrutura do arquivo, assim como calculo da quantidade de blocos, armazenando em uma lista onde cada indice indica a quantidade
 de linhas que o bloco do determinado indice possui'''
+
+tamanhoDoBloco = 10000
+
 registroCEP = struct.Struct("72s72s72s72s2s8s2s")
 colunaDoCEP = 5
 qtdLinhasTotal = os.path.getsize("cep.dat")/registroCEP.size
@@ -26,36 +28,12 @@ tamBlocos = [tamanhoDoBloco] * qtdBlocos
 if resto > 0:
 	tamBlocos.append(resto)
 
-#Abrindo arquivo do CEP e criando o arquivo que os blocos odenados serao escritos
-f = open("cep.dat","rb+")
-fAux = open("cep_ordenado.dat","wb+")
-
 #Funcao para comparacao de tuplas
 def cmp ( ta, tb ):
 	if ta[colunaDoCEP] == tb[colunaDoCEP]: return 0
 	if ta[colunaDoCEP] > tb[colunaDoCEP]: return 1
 	return -1
-
-#Ordenacao em si
-for i in tamBlocos:	
-	blocoOrdenado = []
-	leituras = i #variavel para controlar o numero de leituras com a quantidade de linhas de cada bloco
-	#Enquanto a variavel leituras nao for igual a zero, eh porque o bloco ainda nao acabou de ser lido e adicionado na lista
-	while leituras != 0: 
-		registroPacked = f.read(registroCEP.size)
-		registroUnpacked = registroCEP.unpack(registroPacked)
-		blocoOrdenado.append(registroUnpacked)
-		leituras = leituras - 1 #decrementar leituras
-	blocoOrdenado.sort(cmp) #Fazendo a ordenacao na memoria com a funcao sort nativa de python
-	#Escrevendo o bloco ordenadado no arquivo
-	for j in range(i): 
-		line_pack = registroCEP.pack(blocoOrdenado[j][0], blocoOrdenado[j][1], blocoOrdenado[j][2], blocoOrdenado[j][3], blocoOrdenado[j][4], blocoOrdenado[j][5], blocoOrdenado[j][6])
-		fAux.write(line_pack)
-	blocoOrdenado = [] #necessario zerar a lista para que o processo comece novamente
-
-f.close()
-fAux.seek(0,0) #Volta para o comeco do arquivo com os ceps ordenados em blocos
-
+        
 #Funcao que faz a juncao dos blocos de dois em dois
 def intercalar (blocoAtual, tamBlocosAt, blocoAtualum, tamBlocosAtu):
 
@@ -149,7 +127,3 @@ while len(tamBlocos) != 1:
         os.remove("cep_ordenado.dat")
         os.rename('cepTemp.dat', 'cep_ordenado.dat')
         tamBlocos = tamBlocosAux
-
-print "Fim do programa"
-final = time.time() - inicio
-print "Tempo decorrido: ",final
