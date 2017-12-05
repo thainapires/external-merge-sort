@@ -3,23 +3,19 @@
 import struct
 import sys
 import os
-#import time
+import time
 
-'''
+#Entrada do usuario
 if len(sys.argv) != 2:
-	#tamBloco = int(input("Entre com o numero de linhas de cada bloco: "))
-        tamBloco = 10
+	tamanhoDoBloco = int(input("Entre com o numero de linhas de cada bloco: "))
 else:
-	tamBloco = int(sys.argv[1])
+	tamanhoDoBloco = int(sys.argv[1])
 
-inicio = time.time()'''
-
-tamanhoDoBloco = 10000
+inicio = time.time()
 
 registroCEP = struct.Struct("72s72s72s72s2s8s2s")
 colunaDoCEP = 5
 qtdLinhasTotal = os.path.getsize("cep.dat")/registroCEP.size
-#qtdLinhasTotal = 100
 tamBlocos = []
 qtdBlocos = qtdLinhasTotal / tamanhoDoBloco
 resto = qtdLinhasTotal - (tamanhoDoBloco * qtdBlocos)
@@ -28,7 +24,6 @@ if resto > 0:
 	tamBlocos.append(resto)
 
 f = open("cep.dat","rb+")
-#fAux = open("cepOrdenado.dat","wb+")s
 
 #Funcao para comparacao de tuplas
 def cmp ( ta, tb ):
@@ -61,4 +56,6 @@ for i in tamBlocos:
 print "Fim do programa"
 
 f.close()
-#fAux.close()
+
+final = time.time()
+print "Tempo: ",final-inicio
