@@ -3,24 +3,22 @@
 import struct
 import sys
 import os
-'''import time
+import time
 
+#Entrada do usuario
 if len(sys.argv) != 2:
-	tamBloco = int(input("Entre com o numero de linhas de cada bloco: "))
+	tamanhoDoBloco = int(input("Entre com o numero de linhas de cada bloco: "))
 else:
-	tamBloco = int(sys.argv[1])
+	tamanhoDoBloco = int(sys.argv[1])
 
-#inicio = time.time()'''
+inicio = time.time()
 
 '''Definicao da estrutura do arquivo, assim como calculo da quantidade de blocos, armazenando em uma lista onde cada indice indica a quantidade
 de linhas que o bloco do determinado indice possui'''
 
-tamanhoDoBloco = 10000
-
 registroCEP = struct.Struct("72s72s72s72s2s8s2s")
 colunaDoCEP = 5
 qtdLinhasTotal = os.path.getsize("cep.dat")/registroCEP.size
-#qtdLinhasTotal = 100
 tamBlocos = []
 qtdBlocos = qtdLinhasTotal / tamanhoDoBloco
 resto = qtdLinhasTotal - (tamanhoDoBloco * qtdBlocos)
@@ -127,3 +125,7 @@ while len(tamBlocos) != 1:
         os.remove("cep_ordenado.dat")
         os.rename('cepTemp.dat', 'cep_ordenado.dat')
         tamBlocos = tamBlocosAux
+
+
+final = time.time()
+print "Tempo: ",final-inicio
